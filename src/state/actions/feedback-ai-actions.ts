@@ -58,9 +58,7 @@ export const feedbackAiActions = {
 				.map((q, i) => `${i + 1}. [${q.type}] ${q.text}`)
 				.join('\n');
 
-			const prompt = `You are an expert event feedback designer. Based on the following event file content and existing questions, generate feedback questions in json format.
-
-Event Type: ${eventType}
+			const userPrompt = `Event Type: ${eventType}
 
 Event Details:
 ${fileContent}
@@ -74,7 +72,7 @@ Generate 3-5 NEW feedback questions in json format that are:
 - Clear and concise
 - Non-overlapping with existing questions
 
-Required json schema:
+Return valid json with this schema:
 {
   "questions": [
     {"text": "string", "type": "rating" | "text"}
@@ -84,7 +82,9 @@ Required json schema:
 			// Use the AI generateJson API to generate questions
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const response = await (kmClient.ai as any).generateJson({
-				prompt
+				systemPrompt:
+					'You are an expert event feedback designer. Generate feedback questions in json format.',
+				userPrompt
 			});
 
 			// Parse JSON response
@@ -145,9 +145,7 @@ Required json schema:
 				.map((q, i) => `${i + 1}. [${q.type}] ${q.text}`)
 				.join('\n');
 
-			const prompt = `You are an expert event feedback designer. Based on the event type and host description, generate feedback questions in json format.
-
-Event Type: ${eventType}
+			const userPrompt = `Event Type: ${eventType}
 
 Event Description:
 ${userInput || 'No specific description provided'}
@@ -161,7 +159,7 @@ Generate 3-5 NEW feedback questions in json format that are:
 - Clear and concise
 - Non-overlapping with existing questions
 
-Required json schema:
+Return valid json with this schema:
 {
   "questions": [
     {"text": "string", "type": "rating" | "text"}
@@ -171,7 +169,9 @@ Required json schema:
 			// Use the AI generateJson API to generate questions
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const response = await (kmClient.ai as any).generateJson({
-				prompt
+				systemPrompt:
+					'You are an expert event feedback designer. Generate feedback questions in json format.',
+				userPrompt
 			});
 
 			// Parse JSON response
