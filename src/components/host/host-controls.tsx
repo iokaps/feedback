@@ -230,33 +230,35 @@ export function HostControls() {
 					<div className="flex items-center gap-3">
 						<label className="km-btn-secondary cursor-pointer">
 							<Upload className="size-5" />
-						Choose File
-						<input
-							type="file"
-							accept="image/*"
-							onChange={handleLogoUpload}
-							disabled={isUploadingLogo}
-							className="hidden"
-						/>
-					</label>
-					{isUploadingLogo && (
-						<span className="flex items-center gap-2 text-slate-600">
-							<span className="km-spinner km-spinner-sm" />
-							Uploading...
-						</span>
-					)}
-				</div>
-
-				{logoUrl && logoUrl.trim() && (
-					<div className="bg-secondary-light space-y-2 rounded-lg p-3">
-						<p className="text-sm text-slate-600">{config.currentLogoLabel}:</p>
-						<img
-							src={logoUrl}
-							alt="Event Logo"
-							className="h-16 rounded object-contain"
-						/>
+							Choose File
+							<input
+								type="file"
+								accept="image/*"
+								onChange={handleLogoUpload}
+								disabled={isUploadingLogo}
+								className="hidden"
+							/>
+						</label>
+						{isUploadingLogo && (
+							<span className="flex items-center gap-2 text-slate-600">
+								<span className="km-spinner km-spinner-sm" />
+								Uploading...
+							</span>
+						)}
 					</div>
-				)}
+
+					{logoUrl && logoUrl.trim() && (
+						<div className="bg-secondary-light space-y-2 rounded-lg p-3">
+							<p className="text-sm text-slate-600">
+								{config.currentLogoLabel}:
+							</p>
+							<img
+								src={logoUrl}
+								alt="Event Logo"
+								className="h-16 rounded object-contain"
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 

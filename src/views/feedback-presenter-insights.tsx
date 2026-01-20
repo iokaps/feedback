@@ -128,7 +128,7 @@ export const FeedbackPresenterInsights: React.FC = () => {
 								</div>
 							))
 						) : (
-							<p className="text-xl italic text-slate-700">
+							<p className="text-xl text-slate-700 italic">
 								No positive feedback yet
 							</p>
 						)}
@@ -160,7 +160,7 @@ export const FeedbackPresenterInsights: React.FC = () => {
 								</div>
 							))
 						) : (
-							<p className="text-xl italic text-slate-700">
+							<p className="text-xl text-slate-700 italic">
 								No critical feedback
 							</p>
 						)}
@@ -192,7 +192,7 @@ export const FeedbackPresenterInsights: React.FC = () => {
 								</div>
 							))
 						) : (
-							<p className="text-xl italic text-slate-700">
+							<p className="text-xl text-slate-700 italic">
 								No neutral feedback
 							</p>
 						)}
