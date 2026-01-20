@@ -16,6 +16,23 @@
 	--font-mono:
 		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
 		'Courier New', monospace;
+
+	/* Fresh & Modern Color Palette */
+	--color-primary: #14b8a6;
+	--color-primary-dark: #0d9488;
+	--color-primary-light: #ccfbf1;
+	--color-secondary: #64748b;
+	--color-secondary-light: #f1f5f9;
+	--color-success: #10b981;
+	--color-success-light: #d1fae5;
+	--color-warning: #f59e0b;
+	--color-warning-light: #fef3c7;
+	--color-danger: #ef4444;
+	--color-danger-light: #fee2e2;
+	--color-bg-light: #f8fafc;
+	--color-bg-card: #ffffff;
+	--color-text-dark: #1f2937;
+	--color-border: #ccfbf1;
 }
 
 /* Markdown styling with Tailwind Typography (prose) */
@@ -34,11 +51,11 @@
 
 html,
 body {
-	@apply overscroll-none text-slate-900;
+	@apply text-text-dark bg-bg-light overscroll-none;
 }
 
 .km-input {
-	@apply w-full max-w-96 rounded-xl border border-slate-300 bg-slate-50 px-5 py-3 transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50;
+	@apply border-primary bg-bg-light focus:ring-primary w-full max-w-96 rounded-xl border-2 px-5 py-3 transition-colors focus:ring-2 focus:outline-none disabled:opacity-50;
 }
 
 .km-btn-primary,
@@ -49,15 +66,15 @@ body {
 }
 
 .km-btn-primary {
-	@apply not-disabled:bg-blue-500 not-disabled:text-white not-disabled:hover:bg-blue-600;
+	@apply not-disabled:from-primary not-disabled:bg-gradient-to-r not-disabled:to-cyan-500 not-disabled:text-white not-disabled:hover:scale-105 not-disabled:hover:shadow-lg;
 }
 
 .km-btn-secondary {
-	@apply not-disabled:bg-blue-100 not-disabled:text-blue-950 not-disabled:hover:bg-blue-200;
+	@apply not-disabled:bg-secondary-light not-disabled:text-secondary not-disabled:hover:bg-secondary-light/80;
 }
 
 .km-btn-error {
-	@apply not-disabled:bg-red-500 not-disabled:text-white not-disabled:hover:bg-red-600;
+	@apply not-disabled:bg-danger not-disabled:text-white not-disabled:hover:bg-red-700 not-disabled:hover:shadow-lg;
 }
 
 .km-btn-neutral {

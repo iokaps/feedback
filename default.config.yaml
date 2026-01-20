@@ -39,15 +39,12 @@ connectionsMd: |
   Scan the QR to join the game.
 
 sharedStateMd: |
-  # Shared State Host
-  This is an example of shared state view. Host can start the game, open the presenter screen and allow players to join by scanning the QR.
-
-  ## Host Actions
-  Here's a demo of dashboard actions that can be used to control the state on presenter and player screens.
+  # Game in Progress
+  Host dashboard with game controls and live player feedback.
 
 sharedStatePlayerMd: |
-  # Shared State Player
-  You are connected as a player. Host has started the game. In this shared state example the playtime is synchronized between all players.
+  # Game in Progress
+  Wait for the host to end the game and collect your feedback.
 
 players: 'Players Connected'
 online: 'Online'
@@ -90,3 +87,178 @@ menuAriaLabel: 'Open menu drawer'
 menuHelpAriaLabel: 'Open help drawer'
 
 gameDurationLabel: 'Game duration (mins)'
+# Feedback configuration
+selectEventTypeLabel: 'Select Event Type'
+
+eventTypes:
+  teambuilding:
+    name: 'Teambuilding'
+    questions:
+      - text: 'How satisfied are you with the teamwork during this event?'
+        type: 'rating'
+      - text: 'Did this event strengthen your team bonds?'
+        type: 'rating'
+      - text: 'What was your favorite moment?'
+        type: 'text'
+
+  training:
+    name: 'Training'
+    questions:
+      - text: 'How well did you understand the training content?'
+        type: 'rating'
+      - text: 'Will you be able to apply what you learned?'
+        type: 'rating'
+      - text: 'What topic would you like covered in future training?'
+        type: 'text'
+
+  activeclassroom:
+    name: 'Active Classroom'
+    questions:
+      - text: 'How engaging was this session?'
+        type: 'rating'
+      - text: 'Did the interactive activities help your learning?'
+        type: 'rating'
+      - text: 'Any suggestions for improvement?'
+        type: 'text'
+
+  fair:
+    name: 'Fair'
+    questions:
+      - text: 'How would you rate your overall fair experience?'
+        type: 'rating'
+      - text: 'Would you attend again?'
+        type: 'rating'
+      - text: 'What was your favorite booth or activity?'
+        type: 'text'
+
+  stadiumevent:
+    name: 'Stadium Event'
+    questions:
+      - text: 'How satisfied are you with the event experience?'
+        type: 'rating'
+      - text: 'Was the venue experience good?'
+        type: 'rating'
+      - text: 'What could be improved for next event?'
+        type: 'text'
+
+  corporateevent:
+    name: 'Corporate Event'
+    questions:
+      - text: 'How would you rate the event organization?'
+        type: 'rating'
+      - text: 'Did the event meet your expectations?'
+        type: 'rating'
+      - text: 'What was the highlight for you?'
+        type: 'text'
+
+  seminar:
+    name: 'Seminar'
+    questions:
+      - text: 'How relevant was the content to your role?'
+        type: 'rating'
+      - text: 'Did you gain valuable insights?'
+        type: 'rating'
+      - text: 'What topic would you like explored further?'
+        type: 'text'
+
+  conference:
+    name: 'Conference'
+    questions:
+      - text: 'How would you rate the overall conference experience?'
+        type: 'rating'
+      - text: 'Did you make valuable connections?'
+        type: 'rating'
+      - text: 'Which session was most valuable?'
+        type: 'text'
+
+  concert:
+    name: 'Concert'
+    questions:
+      - text: 'How would you rate the performance?'
+        type: 'rating'
+      - text: 'Would you attend another concert here?'
+        type: 'rating'
+      - text: 'What was your favorite song or moment?'
+        type: 'text'
+
+  meeting:
+    name: 'Meeting'
+    questions:
+      - text: 'Was the meeting productive?'
+        type: 'rating'
+      - text: 'Were all key points covered adequately?'
+        type: 'rating'
+      - text: 'What action items or topics need follow-up?'
+        type: 'text'
+
+  familyoccasion:
+    name: 'Family Occasion'
+    questions:
+      - text: 'How would you rate this family event?'
+        type: 'rating'
+      - text: 'Did you enjoy spending time together?'
+        type: 'rating'
+      - text: 'What was the best part of the event?'
+        type: 'text'
+
+  pub:
+    name: 'Pub'
+    questions:
+      - text: 'How would you rate the atmosphere?'
+        type: 'rating'
+      - text: 'Would you come back?'
+        type: 'rating'
+      - text: 'What could we improve?'
+        type: 'text'
+
+  marketing:
+    name: 'Marketing Event'
+    questions:
+      - text: 'How likely are you to recommend our product/service?'
+        type: 'rating'
+      - text: 'Did the event increase your interest?'
+        type: 'rating'
+      - text: 'What impressed you most?'
+        type: 'text'
+
+feedbackFormMd: |
+  # Please share your feedback
+
+  Your honest feedback helps us improve!
+
+feedbackInstructionsMd: 'Rate each aspect and optionally add comments.'
+feedbackSubmitButton: 'Submit Feedback'
+feedbackSkipButton: 'Skip'
+feedbackAnonymousLabel: 'Submit anonymously'
+feedbackEditableUntilLabel: 'Can edit until game ends'
+
+exportCsvButton: 'Export as CSV'
+responseCounterLabel: 'Responses'
+ratingDistributionLabel: 'Rating Distribution'
+feedbackResultsMd: '# Feedback Results'
+
+uploadLogoLabel: 'Upload Logo'
+currentLogoLabel: 'Current Logo'
+
+# Presenter view configuration
+presenterAutoRotateEnabled: true
+presenterAutoRotateInterval: 30
+presenterLiveViewLabel: 'Live'
+presenterAnalysisViewLabel: 'Analysis'
+presenterInsightsViewLabel: 'Insights'
+presenterWentWellLabel: '✓ Went Well'
+presenterImprovementLabel: '💡 Improvement Ideas'
+presenterNeutralLabel: '→ Other Feedback'
+presenterOverallSatisfactionLabel: 'Overall Satisfaction'
+# Color Customization
+colorCustomizationLabel: 'Customize Game Colors'
+resetColorsButton: 'Reset to Default'
+gameSetupLabel: 'Game Setup'
+# AI Question Generation
+uploadEventFileLabel: 'Upload Event File'
+generateQuestionsButton: 'Generate Questions from File'
+generatingQuestionsLabel: 'Generating questions...'
+useGeneratedQuestionsButton: 'Use Generated Questions'
+mergeQuestionsButton: 'Merge with Existing'
+discardQuestionsButton: 'Discard'
+fileUploadErrorLabel: 'Error uploading file'

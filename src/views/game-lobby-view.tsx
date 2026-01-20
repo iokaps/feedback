@@ -7,7 +7,7 @@ import Markdown from 'react-markdown';
  */
 export function GameLobbyView() {
 	return (
-		<article className="prose">
+		<article className="prose prose-sm max-w-2xl rounded-2xl bg-white/80 p-8 shadow-lg backdrop-blur-sm">
 			<Markdown>{config.gameLobbyMd}</Markdown>
 		</article>
 	);

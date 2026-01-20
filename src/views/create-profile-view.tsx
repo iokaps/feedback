@@ -27,11 +27,17 @@ export function CreateProfileView() {
 	};
 
 	return (
-		<div className="mx-auto w-full max-w-96 space-y-12">
-			<article className="prose text-center">
+		<div className="mx-auto w-full max-w-96 space-y-8">
+			<article className="prose prose-sm rounded-2xl bg-white/80 p-6 text-center shadow-lg backdrop-blur-sm">
 				<Markdown>{config.createProfileMd}</Markdown>
 			</article>
-			<form onSubmit={handleSubmit} className="grid gap-4">
+			<form
+				onSubmit={handleSubmit}
+				className="grid gap-4 rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur-sm"
+			>
+				<label className="text-text-dark text-sm font-medium">
+					{config.playerNameLabel}
+				</label>
 				<input
 					type="text"
 					placeholder={config.playerNamePlaceholder}

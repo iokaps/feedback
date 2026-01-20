@@ -1,5 +1,8 @@
 import { Logo } from '@/components/logo';
+import { kmClient } from '@/services/km-client';
+import { gameConfigStore } from '@/state/stores/game-config-store';
 import { cn } from '@/utils/cn';
+import { useSnapshot } from '@kokimoki/app';
 import * as React from 'react';
 
 interface LayoutProps {
@@ -10,7 +13,7 @@ interface LayoutProps {
 const HostPresenterRoot = ({ children, className }: LayoutProps) => (
 	<div
 		className={cn(
-			'grid min-h-dvh grid-rows-[auto_1fr_auto] bg-slate-100',
+			'from-bg-light to-primary-light grid min-h-dvh grid-rows-[auto_1fr_auto] bg-gradient-to-b',
 			className
 		)}
 	>
@@ -18,19 +21,33 @@ const HostPresenterRoot = ({ children, className }: LayoutProps) => (
 	</div>
 );
 
-const HostPresenterHeader = ({ children, className }: LayoutProps) => (
-	<header
-		className={cn(
-			'sticky top-0 z-10 bg-slate-50/95 shadow-xs backdrop-blur-xs',
-			className
-		)}
-	>
-		<div className="container mx-auto flex items-center justify-between p-4">
-			<Logo />
-			{children}
-		</div>
-	</header>
-);
+const HostPresenterHeader = ({ children, className }: LayoutProps) => {
+	const { logoUrl } = useSnapshot(gameConfigStore.proxy);
+	const isPresenter = React.useMemo(
+		() => kmClient.clientContext.mode === 'presenter',
+		[]
+	);
+
+	return (
+		<header
+			className={cn(
+				'from-primary sticky top-0 z-10 bg-gradient-to-r to-cyan-500 shadow-lg backdrop-blur-xs',
+				className
+			)}
+		>
+			<div className="container mx-auto flex items-center justify-between p-4">
+				{logoUrl && isPresenter ? (
+					<img src={logoUrl} alt="Event Logo" className="h-12 object-contain" />
+				) : logoUrl ? (
+					<img src={logoUrl} alt="Event Logo" className="h-9 object-contain" />
+				) : (
+					<Logo />
+				)}
+				{children}
+			</div>
+		</header>
+	);
+};
 
 const HostPresenterMain = ({ children, className }: LayoutProps) => (
 	<main
@@ -43,7 +60,7 @@ const HostPresenterMain = ({ children, className }: LayoutProps) => (
 const HostPresenterFooter = ({ children, className }: LayoutProps) => (
 	<footer
 		className={cn(
-			'sticky bottom-0 z-10 border-t border-slate-200 bg-slate-50/95 backdrop-blur-xs',
+			'border-primary sticky bottom-0 z-10 border-t-2 bg-white/95 shadow-lg backdrop-blur-xs',
 			className
 		)}
 	>

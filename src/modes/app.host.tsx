@@ -9,7 +9,9 @@ import { useGlobalController } from '@/hooks/useGlobalController';
 import { generateLink } from '@/kit/generate-link';
 import { HostPresenterLayout } from '@/layouts/host-presenter';
 import { gameSessionActions } from '@/state/actions/game-session-actions';
+import { feedbackStore } from '@/state/stores/feedback-store';
 import { gameSessionStore } from '@/state/stores/game-session-store';
+import { FeedbackResultsView } from '@/views/feedback-results-view';
 import { GameStateView } from '@/views/game-state-view';
 import { useSnapshot } from '@kokimoki/app';
 import { CirclePlay, CircleStop, SquareArrowOutUpRight } from 'lucide-react';
@@ -20,6 +22,7 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 	useGlobalController();
 
 	const { started } = useSnapshot(gameSessionStore.proxy);
+	const { feedbackResponses, eventType } = useSnapshot(feedbackStore.proxy);
 	const [buttonCooldown, setButtonCooldown] = React.useState(true);
 
 	// Button cooldown to prevent accidentally spamming start/stop
@@ -41,15 +44,22 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 		playerCode: clientContext.playerCode
 	});
 
+	// Show feedback results if game ended and feedback was collected
+	const showFeedbackResults =
+		!started && Object.keys(feedbackResponses).length > 0 && eventType;
+
 	return (
 		<HostPresenterLayout.Root>
 			<HostPresenterLayout.Header />
 			<HostPresenterLayout.Main>
-				<div className="space-y-4">
-					<GameStateView />
-
-					<HostControls />
-				</div>
+				{showFeedbackResults ? (
+					<FeedbackResultsView />
+				) : (
+					<div className="space-y-4">
+						<GameStateView />
+						<HostControls />
+					</div>
+				)}
 			</HostPresenterLayout.Main>
 
 			<HostPresenterLayout.Footer>

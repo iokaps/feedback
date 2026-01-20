@@ -3,7 +3,7 @@ import { kmClient } from '@/services/km-client';
 export interface LocalPlayerState {
 	/** Player's display name (also registered in playersStore) */
 	name: string;
-	currentView: 'lobby' | 'game-state';
+	currentView: 'lobby' | 'game-state' | 'feedback';
 }
 
 const initialState: LocalPlayerState = {

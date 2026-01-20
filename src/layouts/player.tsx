@@ -10,7 +10,7 @@ interface LayoutProps {
 const PlayerRoot = ({ children, className }: LayoutProps) => (
 	<div
 		className={cn(
-			'grid min-h-dvh grid-rows-[auto_1fr_auto] bg-slate-100',
+			'from-bg-light to-primary-light grid min-h-dvh grid-rows-[auto_1fr_auto] bg-gradient-to-b',
 			className
 		)}
 	>
@@ -21,13 +21,13 @@ const PlayerRoot = ({ children, className }: LayoutProps) => (
 const PlayerHeader = ({ children, className }: LayoutProps) => (
 	<header
 		className={cn(
-			'sticky top-0 z-10 bg-slate-50/95 shadow-xs backdrop-blur-xs',
+			'from-primary sticky top-0 z-10 bg-gradient-to-r to-cyan-500 shadow-lg backdrop-blur-xs',
 			className
 		)}
 	>
 		<div className="container mx-auto flex items-center justify-between p-4">
 			<Logo />
-			{children}
+			<div className="text-white">{children}</div>
 		</div>
 	</header>
 );
@@ -43,7 +43,7 @@ const PlayerMain = ({ children, className }: LayoutProps) => (
 const PlayerFooter = ({ children, className }: LayoutProps) => (
 	<footer
 		className={cn(
-			'sticky bottom-0 z-10 border-t border-slate-200 bg-slate-50/95 backdrop-blur-xs',
+			'border-primary sticky bottom-0 z-10 border-t-2 bg-white/95 shadow-lg backdrop-blur-xs',
 			className
 		)}
 	>
