@@ -252,7 +252,10 @@ presenterNeutralLabel: '→ Other Feedback'
 presenterOverallSatisfactionLabel: 'Overall Satisfaction'
 # Color Customization
 colorCustomizationLabel: 'Customize Game Colors'
+colorPresetsLabel: 'Quick Themes'
+advancedColorsLabel: 'Advanced Colors'
 resetColorsButton: 'Reset to Default'
+customPresetLabel: 'Custom'
 gameSetupLabel: 'Game Setup'
 # AI Question Generation
 uploadEventFileLabel: 'Upload Event File'

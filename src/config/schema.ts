@@ -105,7 +105,10 @@ export const schema = z.object({
 
 	// Color Customization
 	colorCustomizationLabel: z.string().default('Customize Game Colors'),
+	colorPresetsLabel: z.string().default('Quick Themes'),
+	advancedColorsLabel: z.string().default('Advanced Colors'),
 	resetColorsButton: z.string().default('Reset to Default'),
+	customPresetLabel: z.string().default('Custom'),
 	gameSetupLabel: z.string().default('Game Setup'),
 
 	// AI Question Generation

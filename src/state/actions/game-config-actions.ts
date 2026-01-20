@@ -1,4 +1,5 @@
 import { kmClient } from '@/services/km-client';
+import { getPresetById } from '@/utils/color-presets';
 import {
 	gameConfigStore,
 	type ColorCustomization
@@ -46,6 +47,16 @@ export const gameConfigActions = {
 				danger: '#ef4444',
 				dangerLight: '#fee2e2'
 			};
+		});
+	},
+
+	/** Apply a preset color theme */
+	async applyColorPreset(presetId: string) {
+		const preset = getPresetById(presetId);
+		if (!preset) return;
+
+		await kmClient.transact([gameConfigStore], ([gameConfigState]) => {
+			gameConfigState.colors = { ...preset.colors };
 		});
 	}
 };
