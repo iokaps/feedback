@@ -1,7 +1,9 @@
 import { config } from '@/config';
 import { feedbackActions } from '@/state/actions/feedback-actions';
 import { feedbackStore } from '@/state/stores/feedback-store';
+import { cn } from '@/utils/cn';
 import { useSnapshot } from '@kokimoki/app';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
 import { FeedbackPresenterAnalysis } from './feedback-presenter-analysis';
 import { FeedbackPresenterInsights } from './feedback-presenter-insights';
@@ -62,153 +64,55 @@ export const FeedbackPresenterView: React.FC = () => {
 			{presenterView === 'insights' && <FeedbackPresenterInsights />}
 
 			{/* Toggle Buttons - Fixed Bottom Right */}
-			<div
-				style={{
-					position: 'fixed',
-					bottom: '2rem',
-					right: '2rem',
-					display: 'flex',
-					gap: '0.5rem',
-					zIndex: 50
-				}}
-			>
+			<div className="fixed right-8 bottom-8 z-50 flex gap-2">
 				<button
 					onClick={handlePrevView}
-					style={{
-						backgroundColor: '#E2E8F0',
-						color: '#334155',
-						padding: '0.75rem 1rem',
-						borderRadius: '0.5rem',
-						border: 'none',
-						cursor: 'pointer',
-						fontSize: '1rem',
-						fontWeight: '600',
-						transition: 'all 0.2s'
-					}}
-					onMouseEnter={(e) => {
-						(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-							'#CBD5E1';
-					}}
-					onMouseLeave={(e) => {
-						(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-							'#E2E8F0';
-					}}
+					className="rounded-lg bg-slate-200 px-4 py-3 font-semibold text-slate-700 transition-all hover:scale-105 hover:bg-slate-300"
 				>
-					◄
+					<ChevronLeft className="size-5" />
 				</button>
 
 				<button
 					onClick={() => feedbackActions.switchPresenterView('live')}
-					style={{
-						backgroundColor: presenterView === 'live' ? '#3B82F6' : '#E2E8F0',
-						color: presenterView === 'live' ? '#FFFFFF' : '#334155',
-						padding: '0.75rem 1.25rem',
-						borderRadius: '0.5rem',
-						border: 'none',
-						cursor: 'pointer',
-						fontSize: '1rem',
-						fontWeight: '600',
-						transition: 'all 0.2s'
-					}}
-					onMouseEnter={(e) => {
-						if (presenterView !== 'live') {
-							(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-								'#CBD5E1';
-						}
-					}}
-					onMouseLeave={(e) => {
-						if (presenterView !== 'live') {
-							(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-								'#E2E8F0';
-						}
-					}}
+					className={cn(
+						'rounded-lg px-5 py-3 font-semibold transition-all hover:scale-105',
+						presenterView === 'live'
+							? 'bg-primary text-white shadow-lg'
+							: 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+					)}
 				>
 					{config.presenterLiveViewLabel}
 				</button>
 
 				<button
 					onClick={() => feedbackActions.switchPresenterView('analysis')}
-					style={{
-						backgroundColor:
-							presenterView === 'analysis' ? '#3B82F6' : '#E2E8F0',
-						color: presenterView === 'analysis' ? '#FFFFFF' : '#334155',
-						padding: '0.75rem 1.25rem',
-						borderRadius: '0.5rem',
-						border: 'none',
-						cursor: 'pointer',
-						fontSize: '1rem',
-						fontWeight: '600',
-						transition: 'all 0.2s'
-					}}
-					onMouseEnter={(e) => {
-						if (presenterView !== 'analysis') {
-							(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-								'#CBD5E1';
-						}
-					}}
-					onMouseLeave={(e) => {
-						if (presenterView !== 'analysis') {
-							(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-								'#E2E8F0';
-						}
-					}}
+					className={cn(
+						'rounded-lg px-5 py-3 font-semibold transition-all hover:scale-105',
+						presenterView === 'analysis'
+							? 'bg-primary text-white shadow-lg'
+							: 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+					)}
 				>
 					{config.presenterAnalysisViewLabel}
 				</button>
 
 				<button
 					onClick={() => feedbackActions.switchPresenterView('insights')}
-					style={{
-						backgroundColor:
-							presenterView === 'insights' ? '#3B82F6' : '#E2E8F0',
-						color: presenterView === 'insights' ? '#FFFFFF' : '#334155',
-						padding: '0.75rem 1.25rem',
-						borderRadius: '0.5rem',
-						border: 'none',
-						cursor: 'pointer',
-						fontSize: '1rem',
-						fontWeight: '600',
-						transition: 'all 0.2s'
-					}}
-					onMouseEnter={(e) => {
-						if (presenterView !== 'insights') {
-							(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-								'#CBD5E1';
-						}
-					}}
-					onMouseLeave={(e) => {
-						if (presenterView !== 'insights') {
-							(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-								'#E2E8F0';
-						}
-					}}
+					className={cn(
+						'rounded-lg px-5 py-3 font-semibold transition-all hover:scale-105',
+						presenterView === 'insights'
+							? 'bg-primary text-white shadow-lg'
+							: 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+					)}
 				>
 					{config.presenterInsightsViewLabel}
 				</button>
 
 				<button
 					onClick={handleNextView}
-					style={{
-						backgroundColor: '#E2E8F0',
-						color: '#334155',
-						padding: '0.75rem 1rem',
-						borderRadius: '0.5rem',
-						border: 'none',
-						cursor: 'pointer',
-						fontSize: '1rem',
-						fontWeight: '600',
-						transition: 'all 0.2s'
-					}}
-					onMouseEnter={(e) => {
-						(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-							'#CBD5E1';
-					}}
-					onMouseLeave={(e) => {
-						(e.currentTarget as HTMLButtonElement).style.backgroundColor =
-							'#E2E8F0';
-					}}
+					className="rounded-lg bg-slate-200 px-4 py-3 font-semibold text-slate-700 transition-all hover:scale-105 hover:bg-slate-300"
 				>
-					►
+					<ChevronRight className="size-5" />
 				</button>
 			</div>
 		</div>

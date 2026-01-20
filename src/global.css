@@ -80,3 +80,175 @@ body {
 .km-btn-neutral {
 	@apply not-disabled:bg-slate-600 not-disabled:text-white not-disabled:hover:bg-slate-700;
 }
+
+/* ============================================
+   Animation Keyframes & Utilities
+   ============================================ */
+
+@keyframes km-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes km-pulse {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.7;
+		transform: scale(0.95);
+	}
+}
+
+@keyframes km-bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-25%);
+	}
+}
+
+@keyframes km-bounce-dots {
+	0%,
+	80%,
+	100% {
+		transform: translateY(0);
+	}
+	40% {
+		transform: translateY(-8px);
+	}
+}
+
+@keyframes km-shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+@keyframes km-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+
+@keyframes km-star-pop {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.4);
+	}
+	100% {
+		transform: scale(1.2);
+	}
+}
+
+@keyframes km-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Spinner utility classes */
+.km-spinner {
+	@apply inline-block rounded-full border-2 border-current border-t-transparent;
+	animation: km-spin 0.8s linear infinite;
+}
+
+.km-spinner-sm {
+	@apply size-4;
+}
+
+.km-spinner-md {
+	@apply size-5;
+}
+
+.km-spinner-lg {
+	@apply size-6;
+}
+
+/* Bouncing dots loader */
+.km-dots-loader {
+	@apply inline-flex items-center gap-1;
+}
+
+.km-dots-loader span {
+	@apply bg-primary size-3 rounded-full;
+	animation: km-bounce-dots 1.4s ease-in-out infinite;
+}
+
+.km-dots-loader span:nth-child(1) {
+	animation-delay: 0s;
+}
+
+.km-dots-loader span:nth-child(2) {
+	animation-delay: 0.16s;
+}
+
+.km-dots-loader span:nth-child(3) {
+	animation-delay: 0.32s;
+}
+
+/* Card animations */
+.km-card-float {
+	animation: km-float 3s ease-in-out infinite;
+}
+
+.km-fade-in {
+	animation: km-fade-in 0.4s ease-out forwards;
+}
+
+/* Star rating animations */
+.km-star {
+	@apply transform cursor-pointer transition-all duration-200;
+}
+
+.km-star:hover {
+	@apply scale-125;
+}
+
+.km-star-selected {
+	animation: km-star-pop 0.3s ease-out forwards;
+	filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.6));
+}
+
+.km-star-unselected {
+	@apply text-slate-300 hover:text-yellow-200;
+}
+
+/* Shimmer effect for loading states */
+.km-shimmer {
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.4) 50%,
+		transparent 100%
+	);
+	background-size: 200% 100%;
+	animation: km-shimmer 1.5s infinite;
+}
+
+/* Pulse animation class */
+.km-pulse {
+	animation: km-pulse 2s ease-in-out infinite;
+}

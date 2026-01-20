@@ -10,7 +10,15 @@ import { gameConfigStore } from '@/state/stores/game-config-store';
 import { gameSessionStore } from '@/state/stores/game-session-store';
 import { cn } from '@/utils/cn';
 import { useSnapshot } from '@kokimoki/app';
-import { ChevronDown, Upload } from 'lucide-react';
+import {
+	ChevronDown,
+	Clock,
+	Image,
+	MessageSquare,
+	Palette,
+	Settings,
+	Upload
+} from 'lucide-react';
 import * as React from 'react';
 import { AIQuestionGenerator } from '../feedback/ai-question-generator';
 import { ColorCustomizationSection } from '../feedback/color-customization-section';
@@ -163,41 +171,65 @@ export function HostControls() {
 
 	return (
 		<div className="space-y-6">
-			{/* Game Duration & Presenter QR */}
-			<div className="space-y-4">
-				<div className="flex items-center gap-4">
-					<label htmlFor="duration" className="text-sm font-medium">
-						{config.gameDurationLabel}:
-					</label>
-					<input
-						type="number"
-						id="duration"
-						min={1}
-						max={60}
-						value={gameDuration}
-						onChange={(e) =>
-							gameConfigActions.changeGameDuration(Number(e.target.value))
-						}
-						disabled={started}
-						className="km-input w-24"
-					/>
+			{/* Game Setup Section */}
+			<div className="rounded-xl bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+				<div className="mb-4 flex items-center gap-3">
+					<div className="bg-primary/10 rounded-lg p-2">
+						<Settings className="text-primary size-5" />
+					</div>
+					<h3 className="text-lg font-semibold text-slate-900">
+						{config.gameSetupLabel}
+					</h3>
 				</div>
 
-				<button
-					type="button"
-					className={showPresenterQr ? 'km-btn-neutral' : 'km-btn-secondary'}
-					onClick={gameConfigActions.togglePresenterQr}
-				>
-					{config.togglePresenterQrButton}
-				</button>
+				<div className="space-y-4">
+					<div className="flex items-center gap-4">
+						<Clock className="text-secondary size-5" />
+						<label htmlFor="duration" className="text-sm font-medium">
+							{config.gameDurationLabel}:
+						</label>
+						<input
+							type="number"
+							id="duration"
+							min={1}
+							max={60}
+							value={gameDuration}
+							onChange={(e) =>
+								gameConfigActions.changeGameDuration(Number(e.target.value))
+							}
+							disabled={started}
+							className="km-input w-24"
+						/>
+					</div>
+
+					<button
+						type="button"
+						className={cn(
+							'transition-all',
+							showPresenterQr ? 'km-btn-neutral' : 'km-btn-secondary'
+						)}
+						onClick={gameConfigActions.togglePresenterQr}
+					>
+						{config.togglePresenterQrButton}
+					</button>
+				</div>
 			</div>
 
-			{/* Logo Upload */}
-			<div className="space-y-3 border-t border-slate-200 pt-6">
-				<h3 className="font-medium text-slate-900">{config.uploadLogoLabel}</h3>
-				<div className="flex items-center gap-3">
-					<label className="km-btn-secondary cursor-pointer">
-						<Upload className="size-5" />
+			{/* Logo Upload Section */}
+			<div className="rounded-xl bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+				<div className="mb-4 flex items-center gap-3">
+					<div className="bg-primary/10 rounded-lg p-2">
+						<Image className="text-primary size-5" />
+					</div>
+					<h3 className="text-lg font-semibold text-slate-900">
+						{config.uploadLogoLabel}
+					</h3>
+				</div>
+
+				<div className="space-y-3">
+					<div className="flex items-center gap-3">
+						<label className="km-btn-secondary cursor-pointer">
+							<Upload className="size-5" />
 						Choose File
 						<input
 							type="file"
@@ -207,44 +239,65 @@ export function HostControls() {
 							className="hidden"
 						/>
 					</label>
-					{isUploadingLogo && <span>Uploading...</span>}
+					{isUploadingLogo && (
+						<span className="flex items-center gap-2 text-slate-600">
+							<span className="km-spinner km-spinner-sm" />
+							Uploading...
+						</span>
+					)}
 				</div>
 
 				{logoUrl && logoUrl.trim() && (
-					<div className="space-y-2">
+					<div className="bg-secondary-light space-y-2 rounded-lg p-3">
 						<p className="text-sm text-slate-600">{config.currentLogoLabel}:</p>
 						<img
 							src={logoUrl}
 							alt="Event Logo"
-							className="h-16 object-contain"
+							className="h-16 rounded object-contain"
 						/>
 					</div>
 				)}
+				</div>
 			</div>
 
 			{/* Color Customization Section */}
-			<div className="border-t border-slate-200 pt-6">
+			<div className="rounded-xl bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+				<div className="mb-4 flex items-center gap-3">
+					<div className="bg-primary/10 rounded-lg p-2">
+						<Palette className="text-primary size-5" />
+					</div>
+					<h3 className="text-lg font-semibold text-slate-900">
+						{config.colorCustomizationLabel}
+					</h3>
+				</div>
 				<ColorCustomizationSection />
 			</div>
 
-			{/* Feedback Configuration */}
-			<div className="space-y-4 border-t border-slate-200 pt-6">
+			{/* Feedback Configuration Section */}
+			<div className="rounded-xl bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
 				<button
 					type="button"
 					onClick={() => setShowFeedbackConfig(!showFeedbackConfig)}
-					className="km-btn-secondary flex w-full items-center justify-between"
+					className="flex w-full items-center justify-between"
 				>
-					Configure Feedback
+					<div className="flex items-center gap-3">
+						<div className="bg-primary/10 rounded-lg p-2">
+							<MessageSquare className="text-primary size-5" />
+						</div>
+						<h3 className="text-lg font-semibold text-slate-900">
+							Configure Feedback
+						</h3>
+					</div>
 					<ChevronDown
 						className={cn(
-							'size-5 transition-transform',
+							'text-secondary size-5 transition-transform duration-300',
 							showFeedbackConfig && 'rotate-180'
 						)}
 					/>
 				</button>
 
 				{showFeedbackConfig && (
-					<div className="space-y-4 rounded-lg bg-slate-50 p-4">
+					<div className="mt-6 space-y-4 rounded-lg bg-slate-50 p-4">
 						{/* Event Type Selection */}
 						<div className="space-y-2">
 							<label className="text-sm font-medium">
@@ -380,13 +433,13 @@ export function HostControls() {
 						</div>
 						{/* Response Counter */}
 						{feedbackResponses && (
-							<div className="rounded bg-blue-50 p-3">
-								<p className="text-xs text-slate-600">
+							<div className="bg-primary-light border-primary rounded-lg border-l-4 p-4">
+								<p className="text-primary mb-1 text-xs font-medium">
 									{config.responseCounterLabel}
 								</p>
 								<span
 									ref={counterRef}
-									className="text-2xl font-bold text-blue-600"
+									className="text-primary text-3xl font-bold"
 								>
 									{Object.keys(feedbackResponses).length}
 								</span>
@@ -394,7 +447,7 @@ export function HostControls() {
 						)}
 
 						{/* Action Buttons */}
-						<div className="flex gap-2 pt-2">
+						<div className="flex gap-3 pt-2">
 							<button
 								type="button"
 								onClick={handleSaveQuestions}

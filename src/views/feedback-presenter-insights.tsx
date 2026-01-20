@@ -1,5 +1,8 @@
+import { config } from '@/config';
 import { feedbackStore } from '@/state/stores/feedback-store';
+import { cn } from '@/utils/cn';
 import { useSnapshot } from '@kokimoki/app';
+import { Lightbulb, MessageSquare, ThumbsUp } from 'lucide-react';
 import * as React from 'react';
 
 interface CategorizedFeedback {
@@ -67,26 +70,26 @@ export const FeedbackPresenterInsights: React.FC = () => {
 		return '😞';
 	};
 
-	const getSatisfactionColor = (percentage: number) => {
-		if (percentage > 80) return '#D1FAE5'; // light green
-		if (percentage >= 60) return '#FFFBEB'; // light amber
-		return '#FEE2E2'; // light red
+	const getSatisfactionBgClass = (percentage: number) => {
+		if (percentage > 80) return 'bg-success-light border-success';
+		if (percentage >= 60) return 'bg-warning-light border-warning';
+		return 'bg-danger-light border-danger';
 	};
 
 	return (
-		<div style={{ minHeight: '100vh', padding: '2rem' }}>
+		<div className="bg-bg-light min-h-screen p-8">
 			<div className="mx-auto max-w-6xl space-y-8">
 				{/* Header */}
-				<h1 className="mb-8 text-5xl font-bold text-slate-900">Insights</h1>
+				<h1 className="from-primary mb-8 bg-gradient-to-r to-cyan-600 bg-clip-text text-5xl font-bold text-transparent">
+					{config.presenterInsightsViewLabel}
+				</h1>
 
 				{/* Overall Satisfaction Banner */}
 				<div
-					style={{
-						backgroundColor: getSatisfactionColor(
-							categorized.overallSatisfaction
-						)
-					}}
-					className="rounded-2xl border-4 border-slate-200 p-12"
+					className={cn(
+						'km-fade-in rounded-2xl border-4 p-12',
+						getSatisfactionBgClass(categorized.overallSatisfaction)
+					)}
 				>
 					<div className="flex items-center gap-6">
 						<span className="text-7xl">
@@ -97,28 +100,27 @@ export const FeedbackPresenterInsights: React.FC = () => {
 								{categorized.overallSatisfaction}% Satisfied
 							</p>
 							<p className="mt-2 text-2xl text-slate-700">
-								Overall Satisfaction Score
+								{config.presenterOverallSatisfactionLabel}
 							</p>
 						</div>
 					</div>
 				</div>
 
 				{/* Went Well Section */}
-				<div
-					style={{
-						backgroundColor: '#D1FAE5',
-						borderLeft: '8px solid #10B981'
-					}}
-					className="rounded-lg p-8"
-				>
+				<div className="km-fade-in bg-success-light border-success rounded-xl border-l-8 p-8">
 					<div className="mb-6 flex items-center gap-3">
-						<span className="text-4xl">✓</span>
-						<h2 className="text-3xl font-bold text-slate-900">Went Well</h2>
+						<ThumbsUp className="text-success size-10" />
+						<h2 className="text-3xl font-bold text-slate-900">
+							{config.presenterWentWellLabel}
+						</h2>
 					</div>
 					<div className="space-y-4">
 						{categorized.wellComments.length > 0 ? (
 							categorized.wellComments.map((comment, idx) => (
-								<div key={idx} className="rounded-lg bg-white p-6">
+								<div
+									key={idx}
+									className="rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+								>
 									<p className="text-xl text-slate-900">{comment.text}</p>
 									<p className="mt-3 text-sm text-slate-600">
 										— {comment.playerName}
@@ -126,7 +128,7 @@ export const FeedbackPresenterInsights: React.FC = () => {
 								</div>
 							))
 						) : (
-							<p className="text-xl text-slate-700 italic">
+							<p className="text-xl italic text-slate-700">
 								No positive feedback yet
 							</p>
 						)}
@@ -135,22 +137,22 @@ export const FeedbackPresenterInsights: React.FC = () => {
 
 				{/* Improvement Ideas Section */}
 				<div
-					style={{
-						backgroundColor: '#FFFBEB',
-						borderLeft: '8px solid #F59E0B'
-					}}
-					className="rounded-lg p-8"
+					className="km-fade-in bg-warning-light border-warning rounded-xl border-l-8 p-8"
+					style={{ animationDelay: '0.1s' }}
 				>
 					<div className="mb-6 flex items-center gap-3">
-						<span className="text-4xl">💡</span>
+						<Lightbulb className="text-warning size-10" />
 						<h2 className="text-3xl font-bold text-slate-900">
-							Improvement Ideas
+							{config.presenterImprovementLabel}
 						</h2>
 					</div>
 					<div className="space-y-4">
 						{categorized.improvementComments.length > 0 ? (
 							categorized.improvementComments.map((comment, idx) => (
-								<div key={idx} className="rounded-lg bg-white p-6">
+								<div
+									key={idx}
+									className="rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+								>
 									<p className="text-xl text-slate-900">{comment.text}</p>
 									<p className="mt-3 text-sm text-slate-600">
 										— {comment.playerName}
@@ -158,7 +160,7 @@ export const FeedbackPresenterInsights: React.FC = () => {
 								</div>
 							))
 						) : (
-							<p className="text-xl text-slate-700 italic">
+							<p className="text-xl italic text-slate-700">
 								No critical feedback
 							</p>
 						)}
@@ -167,22 +169,22 @@ export const FeedbackPresenterInsights: React.FC = () => {
 
 				{/* Other Feedback Section */}
 				<div
-					style={{
-						backgroundColor: '#F1F5F9',
-						borderLeft: '8px solid #64748B'
-					}}
-					className="rounded-lg p-8"
+					className="km-fade-in bg-secondary-light border-secondary rounded-xl border-l-8 p-8"
+					style={{ animationDelay: '0.2s' }}
 				>
 					<div className="mb-6 flex items-center gap-3">
-						<span className="text-4xl">→</span>
+						<MessageSquare className="text-secondary size-10" />
 						<h2 className="text-3xl font-bold text-slate-900">
-							Other Feedback
+							{config.presenterNeutralLabel}
 						</h2>
 					</div>
 					<div className="space-y-4">
 						{categorized.neutralComments.length > 0 ? (
 							categorized.neutralComments.map((comment, idx) => (
-								<div key={idx} className="rounded-lg bg-white p-6">
+								<div
+									key={idx}
+									className="rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+								>
 									<p className="text-xl text-slate-900">{comment.text}</p>
 									<p className="mt-3 text-sm text-slate-600">
 										— {comment.playerName}
@@ -190,7 +192,7 @@ export const FeedbackPresenterInsights: React.FC = () => {
 								</div>
 							))
 						) : (
-							<p className="text-xl text-slate-700 italic">
+							<p className="text-xl italic text-slate-700">
 								No neutral feedback
 							</p>
 						)}

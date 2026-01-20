@@ -1,5 +1,7 @@
+import { config } from '@/config';
 import { usePlayersWithOnlineStatus } from '@/hooks/usePlayersWithOnlineStatus';
 import { feedbackStore } from '@/state/stores/feedback-store';
+import { cn } from '@/utils/cn';
 import { useSnapshot } from '@kokimoki/app';
 import * as React from 'react';
 
@@ -77,31 +79,18 @@ export const FeedbackPresenterLive: React.FC = () => {
 			? Math.round((aggregatedData.totalResponses / onlinePlayersCount) * 100)
 			: 0;
 
-	const sentimentColors = {
-		positive: '#10B981', // green
-		neutral: '#F59E0B', // amber
-		negative: '#EF4444' // red
-	};
-
 	return (
-		<div
-			style={{
-				backgroundColor: '#F8FAFC',
-				minHeight: '100vh',
-				padding: '2rem'
-			}}
-		>
+		<div className="bg-bg-light min-h-screen p-8">
 			<div className="mx-auto max-w-6xl space-y-8">
 				{/* Header */}
-				<h1 className="text-5xl font-bold text-slate-900">Live Feedback</h1>
+				<h1 className="from-primary bg-gradient-to-r to-cyan-600 bg-clip-text text-5xl font-bold text-transparent">
+					{config.presenterLiveViewLabel} Feedback
+				</h1>
 
 				{/* Response Counter */}
-				<div
-					style={{ backgroundColor: '#EFF6FF' }}
-					className="rounded-2xl border-2 border-blue-200 p-8"
-				>
+				<div className="km-fade-in bg-primary-light border-primary rounded-2xl border-2 p-8">
 					<div className="flex items-baseline gap-6">
-						<span className="text-7xl font-bold text-blue-600">
+						<span className="text-primary text-7xl font-bold">
 							{aggregatedData.totalResponses}
 						</span>
 						<span className="text-3xl font-semibold text-slate-700">
@@ -116,11 +105,13 @@ export const FeedbackPresenterLive: React.FC = () => {
 						shuffledComments.map((comment, idx) => (
 							<div
 								key={idx}
-								style={{
-									borderLeft: `8px solid ${sentimentColors[comment.sentiment]}`,
-									backgroundColor: '#FFFFFF'
-								}}
-								className="rounded-lg p-6 shadow-md"
+								className={cn(
+									'km-fade-in rounded-xl border-l-8 bg-white p-6 shadow-md transition-shadow hover:shadow-lg',
+									comment.sentiment === 'positive' && 'border-success',
+									comment.sentiment === 'neutral' && 'border-warning',
+									comment.sentiment === 'negative' && 'border-danger'
+								)}
+								style={{ animationDelay: `${idx * 0.1}s` }}
 							>
 								<p className="mb-3 text-2xl text-slate-900">{comment.text}</p>
 								{!anonymousMode && (
@@ -131,9 +122,16 @@ export const FeedbackPresenterLive: React.FC = () => {
 							</div>
 						))
 					) : (
-						<p className="py-12 text-center text-2xl text-slate-600">
-							No comments yet. Waiting for feedback...
-						</p>
+						<div className="flex flex-col items-center justify-center py-16">
+							<div className="km-dots-loader mb-4">
+								<span />
+								<span />
+								<span />
+							</div>
+							<p className="text-2xl text-slate-600">
+								No comments yet. Waiting for feedback...
+							</p>
+						</div>
 					)}
 				</div>
 
@@ -160,12 +158,15 @@ export const FeedbackPresenterLive: React.FC = () => {
 								return (
 									<div
 										key={qIndex}
-										className="rounded-lg bg-white px-6 py-4 shadow-md"
+										className="km-fade-in rounded-xl bg-white px-6 py-4 shadow-md transition-shadow hover:shadow-lg"
+										style={{ animationDelay: `${qIndex * 0.05}s` }}
 									>
-										<p className="mb-2 text-lg text-slate-600">Q{qIndex + 1}</p>
+										<p className="text-primary mb-2 text-lg font-medium">
+											Q{qIndex + 1}
+										</p>
 										<p className="text-3xl font-bold text-slate-900">
 											{average.toFixed(1)}
-											<span className="text-2xl">★</span>
+											<span className="ml-1 text-2xl text-yellow-400">★</span>
 										</p>
 									</div>
 								);

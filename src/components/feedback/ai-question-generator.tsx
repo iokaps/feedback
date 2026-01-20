@@ -155,8 +155,8 @@ export function AIQuestionGenerator({
 					>
 						{isGeneratingQuestions ? (
 							<>
-								<span className="mr-2 inline-block animate-spin">⏳</span>
-								Generating...
+								<span className="km-spinner km-spinner-sm" />
+								{config.generatingQuestionsLabel}
 							</>
 						) : (
 							<>
@@ -217,8 +217,8 @@ export function AIQuestionGenerator({
 					>
 						{isGeneratingQuestions ? (
 							<>
-								<span className="mr-2 inline-block animate-spin">⏳</span>
-								Generating...
+								<span className="km-spinner km-spinner-sm" />
+								{config.generatingQuestionsLabel}
 							</>
 						) : (
 							<>

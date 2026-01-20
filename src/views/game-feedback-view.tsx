@@ -138,28 +138,32 @@ export const GameFeedbackView: React.FC = () => {
 					{questions.map((question, qIndex) => (
 						<div
 							key={qIndex}
-							className="bg-bg-card border-primary space-y-3 rounded-lg border-l-4 p-4 shadow-sm"
+							className="km-fade-in bg-bg-card border-primary space-y-3 rounded-xl border-l-4 p-5 shadow-md transition-shadow hover:shadow-lg"
+							style={{ animationDelay: `${qIndex * 0.1}s` }}
 						>
 							<p className="text-primary text-sm font-semibold">
 								Question {qIndex + 1} of {questions.length}
 							</p>
-							<p className="text-text-dark font-medium">{question.text}</p>
+							<p className="text-text-dark text-lg font-medium">
+								{question.text}
+							</p>
 
 							{question.type === 'rating' && (
-								<div className="flex gap-2 pt-2">
+								<div className="flex gap-3 pt-2">
 									{[1, 2, 3, 4, 5].map((star) => (
 										<button
 											key={star}
 											type="button"
 											onClick={() => handleRatingChange(qIndex, star)}
+											disabled={!canEdit}
 											className={cn(
-												'transform transition-all hover:scale-110',
+												'km-star p-1',
 												ratings[qIndex.toString()] >= star
-													? 'text-yellow-400 drop-shadow-md'
-													: 'text-slate-300 hover:text-yellow-200'
+													? 'km-star-selected text-yellow-400'
+													: 'km-star-unselected'
 											)}
 										>
-											<Star className="size-8 fill-current" />
+											<Star className="size-10 fill-current" />
 										</button>
 									))}
 								</div>
