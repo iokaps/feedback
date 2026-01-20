@@ -1,7 +1,6 @@
 import { config } from '@/config';
 import { kmClient } from '@/services/km-client';
 import { feedbackActions } from '@/state/actions/feedback-actions';
-import { feedbackAiActions } from '@/state/actions/feedback-ai-actions';
 import { gameConfigActions } from '@/state/actions/game-config-actions';
 import {
 	feedbackStore,
@@ -11,8 +10,9 @@ import { gameConfigStore } from '@/state/stores/game-config-store';
 import { gameSessionStore } from '@/state/stores/game-session-store';
 import { cn } from '@/utils/cn';
 import { useSnapshot } from '@kokimoki/app';
-import { ChevronDown, Upload, Wand2, X } from 'lucide-react';
+import { ChevronDown, Upload } from 'lucide-react';
 import * as React from 'react';
+import { AIQuestionGenerator } from '../feedback/ai-question-generator';
 import { ColorCustomizationSection } from '../feedback/color-customization-section';
 import { GeneratedQuestionsPreview } from '../feedback/generated-questions-preview';
 
@@ -29,9 +29,7 @@ export function HostControls() {
 		questions,
 		anonymousMode,
 		feedbackResponses,
-		isGeneratingQuestions,
-		generatedQuestions,
-		fileUploadError
+		generatedQuestions
 	} = useSnapshot(feedbackStore.proxy);
 
 	const [isUploadingLogo, setIsUploadingLogo] = React.useState(false);
@@ -41,7 +39,6 @@ export function HostControls() {
 	const [editedQuestions, setEditedQuestions] =
 		React.useState<FeedbackQuestion[]>(questions);
 	const [showGeneratedPreview, setShowGeneratedPreview] = React.useState(false);
-	const [uploadedFileName, setUploadedFileName] = React.useState('');
 
 	// Response counter ref
 	const counterRef = React.useRef<HTMLSpanElement>(null);
@@ -111,51 +108,6 @@ export function HostControls() {
 				isAnonymous
 			);
 		}
-	};
-
-	const handleEventFileUpload = async (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
-		const file = e.target.files?.[0];
-		if (!file) return;
-
-		setUploadedFileName(file.name);
-		try {
-			await feedbackAiActions.uploadAndParseFile(file);
-		} catch (error) {
-			console.error('File upload error:', error);
-		}
-		// Reset input
-		e.target.value = '';
-	};
-
-	const handleGenerateQuestions = async () => {
-		if (!selectedEventType) {
-			alert('Please select an event type first');
-			return;
-		}
-
-		const fileContent = feedbackStore.proxy.uploadedFileContent;
-		if (!fileContent) {
-			alert('Please upload a file first');
-			return;
-		}
-
-		try {
-			await feedbackAiActions.generateQuestionsFromFile(
-				selectedEventType,
-				fileContent,
-				editedQuestions
-			);
-			setShowGeneratedPreview(true);
-		} catch (error) {
-			console.error('Question generation error:', error);
-		}
-	};
-
-	const handleClearUploadedFile = () => {
-		setUploadedFileName('');
-		feedbackStore.proxy.uploadedFileContent = '';
 	};
 
 	const handleQuestionChange = (index: number, text: string) => {
@@ -304,87 +256,12 @@ export function HostControls() {
 							</select>
 						</div>
 
-						{/* AI Question Generation Section */}
-						<div className="border-primary/20 space-y-3 rounded-lg border bg-white p-3">
-							<div className="flex items-center gap-2">
-								<Wand2 className="text-primary size-4" />
-								<h4 className="text-text-dark text-sm font-semibold">
-									AI Question Generator
-								</h4>
-							</div>
-
-							{/* File Upload */}
-							<div className="space-y-2">
-								<label
-									htmlFor="eventFile"
-									className="text-xs font-medium text-slate-600"
-								>
-									{config.uploadEventFileLabel}
-								</label>
-								<label
-									htmlFor="eventFile"
-									className="km-btn-secondary inline-flex cursor-pointer"
-								>
-									<Upload className="size-4" />
-									Choose File (.txt or .pdf)
-									<input
-										id="eventFile"
-										type="file"
-										accept=".txt,.pdf"
-										onChange={handleEventFileUpload}
-										disabled={isGeneratingQuestions}
-										className="hidden"
-									/>
-								</label>
-
-								{/* Uploaded file info */}
-								{uploadedFileName && (
-									<div className="bg-success-light flex items-center justify-between rounded p-2">
-										<span className="text-success text-xs">
-											✓ {uploadedFileName}
-										</span>
-										<button
-											type="button"
-											onClick={handleClearUploadedFile}
-											className="text-success hover:text-success-light"
-										>
-											<X className="size-4" />
-										</button>
-									</div>
-								)}
-
-								{/* Error message */}
-								{fileUploadError && (
-									<div className="bg-danger-light rounded p-2">
-										<p className="text-danger text-xs">{fileUploadError}</p>
-									</div>
-								)}
-							</div>
-
-							{/* Generate button */}
-							<button
-								type="button"
-								onClick={handleGenerateQuestions}
-								disabled={
-									!uploadedFileName ||
-									!selectedEventType ||
-									isGeneratingQuestions
-								}
-								className="km-btn-primary w-full text-sm"
-							>
-								{isGeneratingQuestions ? (
-									<>
-										<span className="mr-2 inline-block animate-spin">⏳</span>
-										{config.generatingQuestionsLabel}
-									</>
-								) : (
-									<>
-										<Wand2 className="size-4" />
-										{config.generateQuestionsButton}
-									</>
-								)}
-							</button>
-						</div>
+						{/* AI Question Generator Component */}
+						<AIQuestionGenerator
+							selectedEventType={selectedEventType}
+							existingQuestions={editedQuestions}
+							onGenerationComplete={() => setShowGeneratedPreview(true)}
+						/>
 
 						{/* Anonymous Toggle */}
 						<div className="flex items-center gap-2">

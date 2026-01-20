@@ -58,7 +58,7 @@ export const feedbackAiActions = {
 				.map((q, i) => `${i + 1}. [${q.type}] ${q.text}`)
 				.join('\n');
 
-			const prompt = `You are an expert event feedback designer. Based on the following event file content and existing questions, generate feedback questions in JSON format.
+			const prompt = `You are an expert event feedback designer. Based on the following event file content and existing questions, generate feedback questions in json format.
 
 Event Type: ${eventType}
 
@@ -68,43 +68,122 @@ ${fileContent}
 Existing Questions (for reference and consistency):
 ${existingQuestionsText || 'None yet'}
 
-Generate 3-5 NEW feedback questions in JSON format that are:
+Generate 3-5 NEW feedback questions in json format that are:
 - Specific to this event
 - Mix of rating (1-5 scale) and text questions
 - Clear and concise
 - Non-overlapping with existing questions
 
-Return ONLY valid JSON with no additional text. Format:
+Required json schema:
 {
   "questions": [
-    {"text": "question text?", "type": "rating"},
-    {"text": "question text?", "type": "text"}
+    {"text": "string", "type": "rating" | "text"}
   ]
 }`;
 
-			// Use the AI chat API to generate questions
+			// Use the AI generateJson API to generate questions
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const response = await (kmClient.ai as any).chat({
+			const response = await (kmClient.ai as any).generateJson({
 				prompt
 			});
 
 			// Parse JSON response
 			let generatedQuestions: FeedbackQuestion[] = [];
 			try {
-				// Extract JSON from response text
-				const responseText =
-					typeof response === 'string'
-						? response
-						: response.text || response.content || '';
-				const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-				if (jsonMatch) {
-					const parsed = JSON.parse(jsonMatch[0]);
-					generatedQuestions = (parsed.questions || []).filter(
-						(q: { text?: string; type?: string }) =>
-							typeof q.text === 'string' &&
-							(q.type === 'rating' || q.type === 'text')
-					);
-				}
+				const parsed =
+					typeof response === 'string' ? JSON.parse(response) : response;
+				generatedQuestions = (parsed.questions || []).filter(
+					(q: { text?: string; type?: string }) =>
+						typeof q.text === 'string' &&
+						(q.type === 'rating' || q.type === 'text')
+				);
+			} catch (parseError) {
+				console.error('Failed to parse AI response:', parseError);
+				throw new Error('Invalid response format from AI');
+			}
+
+			if (generatedQuestions.length === 0) {
+				throw new Error('No valid questions generated');
+			}
+
+			await kmClient.transact([feedbackStore], ([state]) => {
+				state.generatedQuestions = generatedQuestions;
+				state.isGeneratingQuestions = false;
+			});
+
+			return generatedQuestions;
+		} catch (error) {
+			const errorMessage =
+				error instanceof Error ? error.message : 'Failed to generate questions';
+			await kmClient.transact([feedbackStore], ([state]) => {
+				state.fileUploadError = errorMessage;
+				state.isGeneratingQuestions = false;
+			});
+			throw error;
+		}
+	},
+
+	/**
+	 * Generate feedback questions from user input text using AI
+	 *
+	 * @param eventType Selected event type for context
+	 * @param userInput Host-provided text describing the event/context
+	 * @param existingQuestions Current questions (for consistency)
+	 */
+	async generateQuestionsFromInput(
+		eventType: string,
+		userInput: string,
+		existingQuestions: FeedbackQuestion[]
+	) {
+		try {
+			await kmClient.transact([feedbackStore], ([state]) => {
+				state.isGeneratingQuestions = true;
+				state.fileUploadError = '';
+			});
+
+			const existingQuestionsText = existingQuestions
+				.map((q, i) => `${i + 1}. [${q.type}] ${q.text}`)
+				.join('\n');
+
+			const prompt = `You are an expert event feedback designer. Based on the event type and host description, generate feedback questions in json format.
+
+Event Type: ${eventType}
+
+Event Description:
+${userInput || 'No specific description provided'}
+
+Existing Questions (for reference and consistency):
+${existingQuestionsText || 'None yet'}
+
+Generate 3-5 NEW feedback questions in json format that are:
+- Specific to this event type and description
+- Mix of rating (1-5 scale) and text questions
+- Clear and concise
+- Non-overlapping with existing questions
+
+Required json schema:
+{
+  "questions": [
+    {"text": "string", "type": "rating" | "text"}
+  ]
+}`;
+
+			// Use the AI generateJson API to generate questions
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const response = await (kmClient.ai as any).generateJson({
+				prompt
+			});
+
+			// Parse JSON response
+			let generatedQuestions: FeedbackQuestion[] = [];
+			try {
+				const parsed =
+					typeof response === 'string' ? JSON.parse(response) : response;
+				generatedQuestions = (parsed.questions || []).filter(
+					(q: { text?: string; type?: string }) =>
+						typeof q.text === 'string' &&
+						(q.type === 'rating' || q.type === 'text')
+				);
 			} catch (parseError) {
 				console.error('Failed to parse AI response:', parseError);
 				throw new Error('Invalid response format from AI');
