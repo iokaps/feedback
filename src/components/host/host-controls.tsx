@@ -43,6 +43,18 @@ export function HostControls() {
 	// Response counter ref
 	const counterRef = React.useRef<HTMLSpanElement>(null);
 
+	// Sync editedQuestions when store questions change (e.g., after applying generated questions)
+	React.useEffect(() => {
+		setEditedQuestions(questions);
+	}, [questions]);
+
+	// Auto-expand feedback config when questions are applied and preview is closed
+	React.useEffect(() => {
+		if (questions.length > 0 && !showGeneratedPreview) {
+			setShowFeedbackConfig(true);
+		}
+	}, [questions.length, showGeneratedPreview]);
+
 	// Apply custom colors as CSS variables
 	React.useEffect(() => {
 		const style = document.documentElement.style;
